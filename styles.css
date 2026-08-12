@@ -96,6 +96,10 @@
   --dur: 260ms;
   --dur-slow: 460ms;
   --dur-focal: 780ms;
+  /* A tone flip swaps the glass and its foreground at once, so the
+     two necessarily cross. Kept short: the crossing is the only
+     moment the navigation is unreadable, and its length is the cost. */
+  --dur-tone: 110ms;
   --dur-rule: 900ms;
 
   /* --- Drawn icons — one stroke language throughout ---------- */
@@ -121,8 +125,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + var(--sp-5));
-  /* Reserve the scrollbar always, so locking the body when the menu
-     opens does not widen the page and shift the header contents. */
+  /* Locking the body when the menu opens must not widen the page. */
   scrollbar-gutter: stable;
 }
 
@@ -627,8 +630,8 @@ main > section::after,
   content: "";
   -webkit-backdrop-filter: blur(20px) saturate(1.35);
   backdrop-filter: blur(20px) saturate(1.35);
-  transition: background-color var(--dur) var(--ease-out),
-    box-shadow var(--dur) var(--ease-out);
+  transition: background-color var(--dur-tone) linear,
+    box-shadow var(--dur-tone) linear;
 }
 
 /* Read position, drawn on the header rule. */
@@ -658,13 +661,78 @@ main > section::after,
   opacity: 1;
 }
 
-/* The open menu panel is opaque, so the glass has nothing meaningful
-   to sample: make the header solid for the duration. */
+/* --- Adaptive tone ------------------------------------------
+   The page carries both paper and canvas surfaces, so the glass has
+   to answer to whichever is passing behind it. JS reports the tone;
+   the glass, the mark and the navigation flip together. */
+
+.site-header[data-tone="inverse"] {
+  box-shadow: 0 1px 0 var(--rule-inverse);
+}
+
+.site-header[data-tone="inverse"]::before {
+  --glass-start: color-mix(in srgb, #f7fbfd 88%, transparent);
+  --glass-middle: color-mix(in srgb, #e7eef3 74%, transparent);
+  --glass-end: color-mix(in srgb, #cfe2ec 78%, transparent);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.site-header[data-tone="inverse"][data-compact="true"]::before {
+  --glass-start: color-mix(in srgb, #f7fbfd 94%, transparent);
+  --glass-middle: color-mix(in srgb, #e7eef3 86%, transparent);
+  --glass-end: color-mix(in srgb, #cfe2ec 88%, transparent);
+}
+
+/* Same function list at both ends so the mark interpolates. */
+.site-header[data-tone="inverse"] .brand img {
+  filter: brightness(0) invert(0);
+}
+
+.site-header[data-tone="inverse"] .primary-nav a {
+  color: rgba(18, 23, 26, 0.72);
+}
+
+.site-header[data-tone="inverse"] .primary-nav a:hover,
+.site-header[data-tone="inverse"] .primary-nav a[aria-current="page"],
+.site-header[data-tone="inverse"] .nav-toggle {
+  color: #12171a;
+}
+
+.site-header[data-tone="inverse"] .language-link {
+  border-color: rgba(12, 42, 58, 0.36);
+  color: rgba(18, 23, 26, 0.72);
+}
+
+.site-header[data-tone="inverse"] .language-link:hover {
+  border-color: #12171a;
+  color: #12171a;
+}
+
+.site-header[data-tone="inverse"] :focus-visible {
+  outline-color: var(--accent-deep);
+}
+
+/* The open menu panel is opaque canvas, so the header reads as canvas
+   for the duration regardless of what it was over. */
 .site-header[data-nav-open="true"]::before {
   background: var(--canvas);
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+
+.site-header[data-nav-open="true"] .brand img {
+  filter: brightness(0) invert(1);
+}
+
+.site-header[data-nav-open="true"] .primary-nav a,
+.site-header[data-nav-open="true"] .nav-toggle {
+  color: var(--inverse);
+}
+
+.site-header[data-nav-open="true"] .language-link {
+  border-color: var(--rule);
+  color: var(--fg-muted);
 }
 
 .header__inner {
@@ -689,7 +757,8 @@ main > section::after,
   height: 3.15rem;
   filter: brightness(0) invert(1);
   transform-origin: left center;
-  transition: transform var(--dur-slow) var(--ease-out);
+  transition: transform var(--dur-slow) var(--ease-out),
+    filter var(--dur-tone) linear;
 }
 
 .site-header[data-compact="true"] .brand img {
@@ -711,7 +780,7 @@ main > section::after,
   font-size: var(--t-xs);
   font-weight: 600;
   letter-spacing: 0.015em;
-  transition: color var(--dur) var(--ease-out);
+  transition: color var(--dur-tone) linear;
 }
 
 .primary-nav a:hover,
@@ -779,6 +848,15 @@ main > section::after,
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* The label swaps between two words of different length on every
+   toggle (Valikko/Sulje, Menu/Close). Without a reserved width the
+   button resizes and the whole header bar reflows mid-tap. */
+.nav-toggle__label {
+  display: inline-block;
+  min-width: 5.4em;
+  text-align: right;
 }
 
 .nav-toggle__mark {

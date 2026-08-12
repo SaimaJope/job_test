@@ -55,6 +55,7 @@
        --------------------------------------------------------- */
 
     let queued = false;
+    const toneZones = document.querySelectorAll('[data-tone="inverse"]');
 
     const updateHeader = () => {
       queued = false;
@@ -69,6 +70,23 @@
         travel > 0 ? String(Math.min(1, Math.max(0, scrolled / travel))) : '0'
       );
 
+      /* Which surface is passing behind the glass. Hysteresis: the
+         flip swaps glass and foreground together, so a single
+         threshold lets a slow scroll chatter between the two.
+         Entering costs more travel than leaving. */
+      const band = header.getBoundingClientRect().height;
+      const probe = header.dataset.tone === 'inverse' ? band * 0.4 : band * 0.6;
+      let inverse = false;
+
+      for (const zone of toneZones) {
+        const rect = zone.getBoundingClientRect();
+        if (rect.top <= probe && rect.bottom > probe) {
+          inverse = true;
+          break;
+        }
+      }
+
+      header.dataset.tone = inverse ? 'inverse' : 'canvas';
     };
 
     const queueHeader = () => {

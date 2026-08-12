@@ -217,10 +217,7 @@ html {
   border-radius: 1px;
 }
 
-.services :focus-visible {
-  outline-color: var(--accent);
-}
-
+.services :focus-visible,
 .compliance :focus-visible,
 .document-note :focus-visible {
   outline-color: var(--accent-deep);
@@ -323,27 +320,13 @@ main > section::after,
   --surface-depth: linear-gradient(128deg, rgba(110, 205, 240, 0.1), transparent 44%, rgba(0, 0, 0, 0.34));
 }
 
-/* The lifted slab.
-
-   Narrative sections stay in the dark world; this one is simply the
-   raised face of the same material, catching more of the cyan light. */
-.services {
-  --surface-light: rgba(0, 154, 221, 0.28);
-  --surface-light-at: 6% -10%;
-  --surface-warm: rgba(120, 195, 220, 0.07);
-  --surface-warm-at: 96% 112%;
-  --surface-depth: linear-gradient(146deg, #24343d 0%, #18242b 46%, #0f1a20 100%);
-  --surface-grain-opacity: 0.03;
-}
-
 /* The paper slabs.
 
-   White earns its place where the content is literally a record —
-   the permit register and the document note. There it reads as the
-   paper the claim is printed on, which is why it works here and
-   looked arbitrary as a general band. Everything the surface needs
-   is scoped to this group, so moving a section on or off paper is
-   a matter of adding it to this selector. */
+   Everything the surface needs — the slab colour, its three
+   foreground steps, its hairlines and its light — is scoped to this
+   one group, so moving a section on or off paper means adding it to
+   this selector and nothing else. */
+.services,
 .compliance,
 .document-note {
   --slab: #e7eef3;
@@ -711,6 +694,7 @@ main > section::after,
 }
 
 .primary-nav {
+  order: 1;
   display: flex;
   align-items: center;
   gap: clamp(1.5rem, 2.2vw, 2.75rem);
@@ -751,21 +735,28 @@ main > section::after,
   transform-origin: left;
 }
 
-.primary-nav .language-link {
+/* Outside .primary-nav on purpose: the panel is hidden until the
+   menu opens, so anything inside it is unreachable on a phone. The
+   language switch has to stay in the bar at every width. */
+.language-link {
+  position: relative;
+  z-index: 102;
+  order: 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  margin-left: var(--sp-5);
   padding-inline: 0.7rem;
   border: 1px solid var(--rule);
   border-radius: 2px;
   color: var(--fg-muted);
   font-size: 0.6875rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
   transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
 }
 
-.primary-nav .language-link::after {
-  content: none;
-}
-
-.primary-nav .language-link:hover {
+.language-link:hover {
   border-color: var(--rule-strong);
   color: var(--inverse);
 }
@@ -773,6 +764,7 @@ main > section::after,
 .nav-toggle {
   position: relative;
   z-index: 102;
+  order: 3;
   display: none;
   align-items: center;
   gap: 0.65rem;
@@ -1071,7 +1063,7 @@ html:not(.js) .hero__masthead::before {
 }
 
 .service-secondary:hover {
-  background: rgba(242, 245, 246, 0.04);
+  background: rgba(18, 23, 26, 0.04);
 }
 
 .service-secondary:hover::before {
@@ -2192,11 +2184,13 @@ a.footer__line:hover {
    panel, and a filled animation would pin it open at opacity 1. */
 .js .site-header .brand,
 .js .site-header .primary-nav a,
+.js .site-header .language-link,
 .js .site-header .nav-toggle {
   animation: quiet-rise var(--dur-slow) var(--ease-out) both;
 }
 
 .js .site-header .primary-nav a,
+.js .site-header .language-link,
 .js .site-header .nav-toggle {
   animation-delay: 120ms;
 }
@@ -2477,14 +2471,17 @@ html:not(.js) .hero__facts::before {
     mask: var(--icon-arrow-e) center / contain no-repeat;
   }
 
-  .primary-nav .language-link {
-    margin-top: auto;
-    padding: var(--sp-2) var(--sp-4);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    align-self: flex-start;
+  .language-link {
+    min-height: 2.75rem;
+    margin-left: auto;
+    margin-right: var(--sp-4);
+    padding-inline: var(--sp-3);
     font-size: 0.75rem;
     letter-spacing: 0.1em;
+  }
+
+  .nav-toggle {
+    margin-left: 0;
   }
 
   .hero,

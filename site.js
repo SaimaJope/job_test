@@ -57,6 +57,57 @@
     let queued = false;
     const toneZones = document.querySelectorAll('[data-tone="inverse"]');
 
+    /* --- Read position -----------------------------------------
+       The navigation already had a style for the current page. It
+       now also reports the section actually being read, so the bar
+       answers "where am I" and not only "where have I clicked".
+
+       A page that marks its own nav entry in markup — the
+       qualifications page does — keeps that mark and opts out: two
+       marks in one bar is worse than one. */
+
+    const sectionMarks = (() => {
+      if (!navigation || navigation.querySelector('a[aria-current]')) return [];
+
+      return Array.from(navigation.querySelectorAll('a[href^="#"]'))
+        .map((link) => {
+          const id = link.getAttribute('href');
+          return { link, section: id.length > 1 ? document.querySelector(id) : null };
+        })
+        .filter((mark) => mark.section);
+    })();
+
+    let marked = null;
+
+    const updateMarks = (band) => {
+      if (!sectionMarks.length) return;
+
+      /* Just under the header, a little into the reading area: the
+         section a reader would say they are in, not the one whose
+         last line is still leaving the screen. */
+      const probe = band + window.innerHeight * 0.3;
+      let current = null;
+
+      for (const mark of sectionMarks) {
+        const rect = mark.section.getBoundingClientRect();
+        if (rect.top <= probe && rect.bottom > probe) current = mark.link;
+      }
+
+      /* The final section can never reach the probe on a short page
+         or at the end of a long one; once the document bottom is
+         reached its mark stands. */
+      if (!current) {
+        const end = document.documentElement.scrollHeight - window.innerHeight - 2;
+        if (window.scrollY >= end) current = sectionMarks[sectionMarks.length - 1].link;
+      }
+
+      if (current === marked) return;
+
+      marked?.removeAttribute('aria-current');
+      current?.setAttribute('aria-current', 'true');
+      marked = current;
+    };
+
     const updateHeader = () => {
       queued = false;
       if (!header) return;
@@ -87,6 +138,8 @@
       }
 
       header.dataset.tone = inverse ? 'inverse' : 'canvas';
+
+      updateMarks(band);
     };
 
     const queueHeader = () => {
@@ -134,6 +187,64 @@
          reports on, must not stay hidden. */
       window.setTimeout(revealAll, 4000);
     }
+
+    /* ---------------------------------------------------------
+       Directional rules
+
+       Every accent rule on the page wipes in from a fixed corner.
+       That is correct for an entrance, which nobody aims, and wrong
+       for a hover, which is aimed precisely. These two handlers
+       report where the pointer crossed the border, so a rule opens
+       under the cursor and — because the same handler runs on the
+       way out — closes toward wherever it left.
+
+       Origin only, and only at the two crossings: no pointermove
+       listener, no per-frame work, nothing running while the pointer
+       sits still. CSS keeps the fallbacks the rules shipped with, so
+       touch, no-pointer and no-script all behave as before.
+       --------------------------------------------------------- */
+
+    const DIRECTIONAL = [
+      '.capability',
+      '.credential-row',
+      '.operating-model__item',
+      '.audience-secondary',
+      '.membership-list li',
+      '.service-secondary',
+      '.contact-band__phone',
+      '.text-link',
+      '.primary-nav a',
+      '.project-figure',
+    ].join(',');
+
+    const clamp = (value) => Math.min(100, Math.max(0, value));
+
+    const markOrigin = (event) => {
+      if (event.pointerType === 'touch') return;
+
+      const from = event.relatedTarget;
+
+      for (let node = event.target; node instanceof Element; node = node.parentElement) {
+        if (node === document.body) break;
+        if (!node.matches(DIRECTIONAL)) continue;
+        /* pointerover/out also fire when moving between an element's
+           own children. Only a crossing of this element's own border
+           may move its origin. */
+        if (from instanceof Node && node.contains(from)) continue;
+
+        const rect = node.getBoundingClientRect();
+        if (!rect.width || !rect.height) continue;
+
+        const x = clamp(((event.clientX - rect.left) / rect.width) * 100);
+        const y = clamp(((event.clientY - rect.top) / rect.height) * 100);
+
+        node.style.setProperty('--rule-origin-x', `${x.toFixed(2)}%`);
+        node.style.setProperty('--rule-origin-y', `${y.toFixed(2)}%`);
+      }
+    };
+
+    document.addEventListener('pointerover', markOrigin, { passive: true });
+    document.addEventListener('pointerout', markOrigin, { passive: true });
 
     /* ---------------------------------------------------------
        Current year

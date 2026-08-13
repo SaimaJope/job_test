@@ -194,8 +194,17 @@ address {
 
 html {
   caret-color: var(--accent);
+  scroll-behavior: smooth;
   scrollbar-color: rgba(242, 241, 236, 0.24) transparent;
   scrollbar-width: thin;
+}
+
+/* An anchored section used to arrive underneath the sticky header,
+   so the reader landed on a heading they could not see. It now stops
+   with the header's own band of air above it. */
+main[id],
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + var(--sp-5));
 }
 
 ::-webkit-scrollbar {
@@ -545,6 +554,7 @@ main > section::after,
 /* --- Links --------------------------------------------------- */
 
 .text-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -554,7 +564,23 @@ main > section::after,
   font-weight: 600;
   letter-spacing: -0.005em;
   line-height: 1.2;
-  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+/* The underline used to change colour in place. It is the same line
+   at the same weight when it settles, but it now arrives — drawn
+   from the side the pointer came in on, over the rule already
+   there. */
+.text-link::before {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: var(--rule-origin-x, 0%) center;
+  transition: transform var(--dur) var(--ease-out);
 }
 
 .text-link::after {
@@ -572,15 +598,18 @@ main > section::after,
   mask-image: var(--icon-arrow-e);
 }
 
-.text-link:hover {
-  border-bottom-color: currentColor;
+.text-link:hover::before,
+.text-link:focus-visible::before {
+  transform: scaleX(1);
 }
 
-.text-link:hover::after {
+.text-link:hover::after,
+.text-link:focus-visible::after {
   transform: translate(0.2em, -0.2em);
 }
 
-.text-link--forward:hover::after {
+.text-link--forward:hover::after,
+.text-link--forward:focus-visible::after {
   transform: translateX(0.3em);
 }
 
@@ -693,7 +722,8 @@ main > section::after,
 }
 
 .site-header[data-tone="inverse"] .primary-nav a:hover,
-.site-header[data-tone="inverse"] .primary-nav a[aria-current="page"],
+.site-header[data-tone="inverse"] .primary-nav a:focus-visible,
+.site-header[data-tone="inverse"] .primary-nav a[aria-current],
 .site-header[data-tone="inverse"] .nav-toggle {
   color: #12171a;
 }
@@ -703,7 +733,8 @@ main > section::after,
   color: rgba(18, 23, 26, 0.72);
 }
 
-.site-header[data-tone="inverse"] .language-link:hover {
+.site-header[data-tone="inverse"] .language-link:hover,
+.site-header[data-tone="inverse"] .language-link:focus-visible {
   border-color: #12171a;
   color: #12171a;
 }
@@ -784,10 +815,15 @@ main > section::after,
 }
 
 .primary-nav a:hover,
-.primary-nav a[aria-current="page"] {
+.primary-nav a:focus-visible,
+.primary-nav a[aria-current] {
   color: var(--inverse);
 }
 
+/* The rule opens under the cursor and closes toward wherever the
+   cursor left; --rule-origin-x is written by site.js on both
+   crossings. Without it the mark still resolves against the right
+   edge it always used. */
 .primary-nav a::after {
   position: absolute;
   right: 0;
@@ -797,13 +833,20 @@ main > section::after,
   background: currentColor;
   content: "";
   transform: scaleX(0);
-  transform-origin: right;
+  transform-origin: var(--rule-origin-x, 100%) center;
   transition: transform var(--dur) var(--ease-out);
 }
 
 .primary-nav a:hover::after,
-.primary-nav a[aria-current="page"]::after {
+.primary-nav a:focus-visible::after,
+.primary-nav a[aria-current]::after {
   transform: scaleX(1);
+}
+
+/* Read position, not hover: the mark on the section being read is
+   drawn from the start of the label, so a pointer passing over a
+   neighbour cannot be mistaken for it. */
+.primary-nav a[aria-current]::after {
   transform-origin: left;
 }
 
@@ -825,10 +868,12 @@ main > section::after,
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 
-.language-link:hover {
+.language-link:hover,
+.language-link:focus-visible {
   border-color: var(--rule-strong);
   color: var(--inverse);
 }
@@ -1139,12 +1184,14 @@ html:not(.js) .hero__masthead::before {
   background: var(--accent-line-y);
   content: "";
   transform: scaleY(0);
-  transform-origin: top;
+  transform-origin: center var(--rule-origin-y, 0%);
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
+/* The tint was mixed for a light slab and is invisible on this one;
+   on canvas the lift has to come from the foreground side. */
 .service-secondary:hover {
-  background: rgba(18, 23, 26, 0.04);
+  background: rgba(242, 245, 246, 0.035);
 }
 
 .service-secondary:hover::before {
@@ -1230,6 +1277,7 @@ html:not(.js) .hero__masthead::before {
 .capability::after {
   background: var(--accent-line-x);
   transform: scaleX(0);
+  transform-origin: var(--rule-origin-x, 0%) center;
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
@@ -1721,13 +1769,13 @@ html:not(.js) .hero__masthead::before {
   background: currentColor;
   content: "";
   transform: scaleX(0);
-  transform-origin: right;
+  transform-origin: var(--rule-origin-x, 100%) center;
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-.contact-band__phone:hover::after {
+.contact-band__phone:hover::after,
+.contact-band__phone:focus-visible::after {
   transform: scaleX(1);
-  transform-origin: left;
 }
 
 .contact-band__phone--international {
@@ -1865,10 +1913,12 @@ html:not(.js) .footer__base::before {
 }
 
 a.footer__line {
-  transition: color var(--dur) var(--ease-out);
+  transform-origin: left center;
+  transition: color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 
-a.footer__line:hover {
+a.footer__line:hover,
+a.footer__line:focus-visible {
   color: var(--accent);
 }
 
@@ -2052,6 +2102,7 @@ a.footer__line:hover {
 .credential-row::after {
   background: var(--accent-line-x);
   transform: scaleX(0);
+  transform-origin: var(--rule-origin-x, 0%) center;
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
@@ -2182,7 +2233,8 @@ a.footer__line:hover {
   transition: color var(--dur) var(--ease-out);
 }
 
-.document-note__contact a:hover {
+.document-note__contact a:hover,
+.document-note__contact a:focus-visible {
   color: var(--accent-deep);
 }
 
@@ -2448,6 +2500,197 @@ html:not(.js) .hero__facts::before {
 }
 
 /* =============================================================
+   Interaction — the half the visitor authors
+
+   Everything above this line is rehearsed: entrances that play once,
+   on a clock nobody in the room controls. This section is the other
+   half. Rules open under the cursor and close toward wherever it
+   left. The plates carry a light that follows the pointer. Controls
+   answer a press inside a frame. The navigation reports the section
+   actually being read rather than the last one clicked.
+
+   Nothing here touches a rest state. Pointer away, keyboard idle,
+   script absent: the page is the page that shipped.
+   ============================================================= */
+
+/* --- Registers answer the pointer ----------------------------
+   The same accent rule the capabilities and credentials already
+   use, extended to the two registers that had no reply at all.
+   --rule-origin-x is written by site.js at both crossings. */
+
+.operating-model__item::after,
+.audience-secondary::after,
+.membership-list li::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--accent-line-x);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: var(--rule-origin-x, 0%) center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.operating-model__item:hover::after,
+.audience-secondary:hover::after,
+.membership-list li:hover::after {
+  transform: scaleX(1);
+}
+
+/* A register row is scanned by pointing at it. The issuer column is
+   set faint so the name reads first; under the pointer that ranking
+   is no longer needed, so the row resolves to one weight. */
+.proof-list li small,
+.credential-row__issuer {
+  transition: color var(--dur) var(--ease-out);
+}
+
+.proof-list li:hover small {
+  color: var(--on-inverse);
+}
+
+.credential-row:hover .credential-row__issuer {
+  color: var(--fg-soft);
+}
+
+/* --- The plate answers on its credit -------------------------
+   A plate under the pointer already settles half a percent closer.
+   What it had no way to say was which plate. The credit rule takes
+   the accent the registers use, drawn from the side the pointer
+   came in on — the photograph itself is left exactly as graded,
+   which on daylight documentary work is the only honest option: any
+   light strong enough to read over a white wall in full sun reads as
+   a wash laid on top of it, not as light. */
+
+.project-figure__caption {
+  position: relative;
+}
+
+.project-figure__caption::before {
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: var(--accent-line-x);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: var(--rule-origin-x, 0%) center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.project-figure:hover .project-figure__caption::before {
+  transform: scaleX(1);
+}
+
+.project-figure__caption strong {
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* --- Press ---------------------------------------------------
+   Contact, not travel. Nothing moves far enough to read as motion;
+   it reads as the control giving under the finger, and it is over
+   before the browser has finished deciding what the gesture was.
+   The platform's own tap flash is removed only because something
+   better replaces it. */
+
+.brand,
+.footer__logo,
+.nav-toggle,
+.language-link,
+.primary-nav a,
+.text-link,
+a.footer__line,
+.contact-band__phone,
+.skip-link {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brand,
+.footer__logo,
+.nav-toggle,
+.contact-band__phone {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.brand:active,
+.footer__logo:active {
+  transform: scale(0.985);
+}
+
+.nav-toggle:active {
+  transform: scale(0.96);
+}
+
+.language-link:active {
+  transform: scale(0.955);
+}
+
+/* Left origin on both: these sit on a text baseline, and a centred
+   scale would pull the first character off the column edge. */
+.text-link {
+  transform-origin: left center;
+}
+
+.text-link:active,
+a.footer__line:active {
+  transform: scale(0.982);
+}
+
+/* Set at display size and left-aligned to the shell, so it has to
+   give from its left edge or the whole number drifts. */
+.contact-band__phone {
+  transform-origin: left center;
+}
+
+.contact-band__phone:active {
+  transform: scale(0.994);
+}
+
+/* These are inline on the bar, so a transform would not apply, and
+   an opacity transition would promote them to their own layer and
+   cost the label its subpixel antialiasing. The colour channel is
+   already transitioned here and gives the press for free. */
+.primary-nav a:active {
+  color: var(--fg-muted);
+}
+
+.site-header[data-tone="inverse"] .primary-nav a:active {
+  color: rgba(18, 23, 26, 0.5);
+}
+
+.site-header[data-nav-open="true"] .primary-nav a:active {
+  color: var(--fg-muted);
+}
+
+/* --- The hero recedes rather than scrolling away -------------
+   Driven by the scroll position itself, off the main thread, so the
+   composition settles back as the reader leaves it instead of
+   sliding out at full strength. Browsers without a scroll timeline
+   simply scroll. */
+
+@keyframes hero-settle {
+  to {
+    opacity: 0.42;
+    transform: translate3d(0, -3.5%, 0);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Longhand deliberately: the `animation` shorthand resets both
+       timeline and range, and `duration: auto` is what hands the
+       whole range to the scroll position. */
+    .js .hero__inner {
+      animation-name: hero-settle;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 72%;
+    }
+  }
+}
+
+/* =============================================================
    Responsive
    ============================================================= */
 
@@ -2550,6 +2793,45 @@ html:not(.js) .hero__facts::before {
     transform: none;
     -webkit-mask: var(--icon-arrow-e) center / contain no-repeat;
     mask: var(--icon-arrow-e) center / contain no-repeat;
+  }
+
+  /* The panel holds four destinations, so it should arrive as a list
+     and not as one flat rectangle: the panel carries the fade, each
+     line settles into it a frame or two behind the one above.
+     Leaving, they go together — the panel is dismissed, and a
+     staggered exit only delays the page the visitor asked for.
+
+     Staged on `translate`, not on `transform` or `opacity`. Those two
+     belong to the bar's own arrival animation, and an animation
+     outranks declared style: taking them back would mean cancelling
+     that animation at this breakpoint, which makes it restart — and
+     briefly blank the bar — every time a window is resized across
+     900px. `translate` composes with the animated transform instead
+     of competing with it. */
+  .js .primary-nav a {
+    translate: 0 0.7rem;
+    transition: translate var(--dur-slow) var(--ease-out),
+      color var(--dur-tone) linear;
+  }
+
+  .js .primary-nav[data-open="true"] a {
+    translate: none;
+  }
+
+  .js .primary-nav[data-open="true"] a:nth-child(1) {
+    transition-delay: 55ms;
+  }
+
+  .js .primary-nav[data-open="true"] a:nth-child(2) {
+    transition-delay: 105ms;
+  }
+
+  .js .primary-nav[data-open="true"] a:nth-child(3) {
+    transition-delay: 155ms;
+  }
+
+  .js .primary-nav[data-open="true"] a:nth-child(n + 4) {
+    transition-delay: 205ms;
   }
 
   .language-link {
@@ -3133,7 +3415,12 @@ html:not(.js) .hero__facts::before {
   .js [data-reveal] .capability::after,
   .js [data-reveal] .credential-row::after,
   .js [data-reveal] .service-secondary::before,
-  .js [data-reveal] .contact-band__phone::after {
+  .js [data-reveal] .contact-band__phone::after,
+  .js [data-reveal] .operating-model__item::after,
+  .js [data-reveal] .audience-secondary::after,
+  .js [data-reveal] .membership-list li::after,
+  .js [data-reveal] .project-figure__caption::before,
+  .js [data-reveal] .text-link::before {
     opacity: 0;
   }
 
@@ -3141,12 +3428,38 @@ html:not(.js) .hero__facts::before {
   .js [data-reveal] .credential-row:hover::after,
   .js [data-reveal] .service-secondary:hover::before,
   .js [data-reveal] .contact-band__phone:hover::after,
-  .js [data-reveal] .contact-band__phone:focus-visible::after {
+  .js [data-reveal] .contact-band__phone:focus-visible::after,
+  .js [data-reveal] .operating-model__item:hover::after,
+  .js [data-reveal] .audience-secondary:hover::after,
+  .js [data-reveal] .membership-list li:hover::after,
+  .js [data-reveal] .project-figure:hover .project-figure__caption::before,
+  .js [data-reveal] .text-link:hover::before,
+  .js [data-reveal] .text-link:focus-visible::before {
     opacity: 1;
   }
 
   .capability:hover,
   .credential-row:hover {
+    transform: none;
+  }
+
+  /* The menu panel still arrives; its lines no longer settle into it. */
+  .js .primary-nav a {
+    translate: none;
+  }
+
+  /* Press must survive — it is the only confirmation a control gives
+     that it registered the gesture. It changes weight instead of
+     size. Declared last so the flattening rules above cannot take
+     the feedback with the travel. */
+  .brand:active,
+  .footer__logo:active,
+  .nav-toggle:active,
+  .language-link:active,
+  .text-link:active,
+  a.footer__line:active,
+  .contact-band__phone:active {
+    opacity: 0.6;
     transform: none;
   }
 

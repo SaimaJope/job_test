@@ -247,9 +247,10 @@
     document.addEventListener('pointerout', markOrigin, { passive: true });
 
     /* ---------------------------------------------------------
-       Hero bokeh
+       Bokeh fields
 
-       A handful of out-of-focus lights behind the opening. What
+       Out-of-focus lights behind the dark bookends of the page —
+       the hero and the footer, each carrying its own canvas. What
        sells a defocused highlight is not a soft blob but a nearly
        flat disc with a faintly brighter rim, so each light is
        pre-rendered as exactly that. Distance does the rest: far
@@ -257,31 +258,42 @@
        defined. They gather in loose clusters — a uniform scatter
        reads as confetti, clusters read as real light sources —
        and they drift a few pixels a second with a slow, uneven
-       breathing, paused whenever the hero is off screen.
+       breathing, paused whenever their surface is off screen.
 
        Scroll moves them too: each light rises against the scroll
        at a rate set by its distance, so the field parallaxes —
        near lights sweep past, far ones hang back — with a short
        lag that makes the response read as weight, not wiring.
+
+       data-strength scales a field's brightness: the footer runs
+       hotter than the hero, where legibility of the headline asks
+       for restraint.
        --------------------------------------------------------- */
 
-    const bokehCanvas = document.querySelector('.hero__bokeh');
-    const bokehContext = bokehCanvas?.getContext('2d');
+    /* The surface's own range: pale cyan-white down to sky blue. */
+    const bokehPalette = [
+      [176, 216, 240],
+      [118, 194, 236],
+      [64, 164, 220],
+    ];
 
-    if (bokehCanvas && bokehContext) {
-      /* The surface's own range: pale cyan-white down to sky blue. */
-      const palette = [
-        [176, 216, 240],
-        [118, 194, 236],
-        [64, 164, 220],
-      ];
+    const bokehClusters = [
+      { x: 0.15, y: 0.82, spread: 0.13, count: 5 },
+      { x: 0.86, y: 0.26, spread: 0.17, count: 4 },
+      { x: 0.66, y: 0.76, spread: 0.2, count: 3 },
+      { x: 0.5, y: 0.5, spread: 0.4, count: 2 },
+    ];
 
-      const clusters = [
-        { x: 0.15, y: 0.82, spread: 0.13, count: 5 },
-        { x: 0.86, y: 0.26, spread: 0.17, count: 4 },
-        { x: 0.66, y: 0.76, spread: 0.2, count: 3 },
-        { x: 0.5, y: 0.5, spread: 0.4, count: 2 },
-      ];
+    /* Sum of three: a cheap bell curve, so clusters thin out at
+       their edges instead of filling a box. */
+    const gauss = () =>
+      (Math.random() + Math.random() + Math.random()) / 1.5 - 1;
+
+    const mountBokeh = (bokehCanvas) => {
+      const bokehContext = bokehCanvas.getContext('2d');
+      if (!bokehContext) return;
+
+      const strength = Number(bokehCanvas.dataset.strength) || 1;
 
       let lights = [];
       let width = 0;
@@ -292,11 +304,6 @@
       let frame = 0;
       let last = 0;
       let glide = window.scrollY || 0;
-
-      /* Sum of three: a cheap bell curve, so clusters thin out at
-         their edges instead of filling a box. */
-      const gauss = () =>
-        (Math.random() + Math.random() + Math.random()) / 1.5 - 1;
 
       const sprite = (radius, [r, g, b], softness) => {
         const size = radius * 2 + 2;
@@ -329,15 +336,18 @@
         const scale = 0.72 + 0.48 * Math.min(width / 1200, 1);
         lights = [];
 
-        clusters.forEach((cluster) => {
+        bokehClusters.forEach((cluster) => {
           for (let i = 0; i < cluster.count; i += 1) {
             const depth = Math.random(); /* 0 near — 1 far */
             const drift = 1.15 - depth * 0.7;
             const pick = Math.random();
-            const color = palette[pick < 0.45 ? 0 : pick < 0.8 ? 1 : 2];
+            const color = bokehPalette[pick < 0.45 ? 0 : pick < 0.8 ? 1 : 2];
 
+            /* Strength grows the lights a little as well as
+               brightening them, so a hotter field reads as nearer
+               light, not a turned-up dial. */
             const radius = Math.round(
-              (13 + 62 * Math.pow(depth, 1.45)) * scale
+              (13 + 62 * Math.pow(depth, 1.45)) * scale * (1 + (strength - 1) * 0.3)
             );
 
             lights.push({
@@ -347,7 +357,7 @@
               vy: (Math.random() - 0.5) * 1.8 * drift,
               radius,
               size: radius * 2 + 2,
-              alpha: (0.04 + 0.065 * (1 - depth)) * (0.8 + Math.random() * 0.4),
+              alpha: (0.04 + 0.065 * (1 - depth)) * (0.8 + Math.random() * 0.4) * strength,
               parallax: 0.1 + 0.32 * (1 - depth),
               w1: 0.18 + Math.random() * 0.4,
               w2: 0.05 + Math.random() * 0.16,
@@ -481,7 +491,9 @@
         },
         { passive: true }
       );
-    }
+    };
+
+    document.querySelectorAll('.bokeh-field').forEach(mountBokeh);
 
     /* ---------------------------------------------------------
        Current year

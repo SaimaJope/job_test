@@ -958,11 +958,12 @@ main > section::after,
   background: var(--canvas);
 }
 
-/* Out-of-focus lights behind the opening. The canvas only ever adds
-   light in the surface's own cyan range, and screen blending can
-   never darken, so the hero keeps its colour; the grain layer above
-   it keeps the lights sitting in the surface instead of on it. */
-.hero__bokeh {
+/* Out-of-focus lights behind a dark surface — the hero and the
+   footer each carry one. The canvas only ever adds light in the
+   surface's own cyan range, and screen blending can never darken,
+   so the surface keeps its colour; the grain layer above it keeps
+   the lights sitting in the surface instead of on it. */
+.bokeh-field {
   position: absolute;
   inset: 0;
   z-index: 0;

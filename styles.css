@@ -56,10 +56,13 @@
   --sp-11: 6rem;
   --sp-12: 8rem;
 
-  /* --- Section rhythm — three deliberate tiers, not one ------ */
-  --section-xl: clamp(6rem, 9.5vw, 9.5rem);
-  --section-lg: clamp(4.75rem, 7.25vw, 7.25rem);
-  --section-md: clamp(3.75rem, 5.25vw, 5.25rem);
+  /* --- Section rhythm — three deliberate tiers, not one ------
+     Spread far enough apart to be told apart at a glance: md binds
+     a head to its content and clusters sections inside a movement,
+     lg opens a chapter, xl is the grand pause before a moment. */
+  --section-xl: clamp(7rem, 11vw, 11rem);
+  --section-lg: clamp(4.5rem, 7vw, 7rem);
+  --section-md: clamp(2.5rem, 3.5vw, 3.5rem);
 
   /* --- Measure ---------------------------------------------- */
   --shell: 84rem;
@@ -955,6 +958,20 @@ main > section::after,
   background: var(--canvas);
 }
 
+/* Out-of-focus lights behind the opening. The canvas only ever adds
+   light in the surface's own cyan range, and screen blending can
+   never darken, so the hero keeps its colour; the grain layer above
+   it keeps the lights sitting in the surface instead of on it. */
+.hero__bokeh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
 .hero__inner {
   display: flex;
   flex-direction: column;
@@ -1113,16 +1130,12 @@ html:not(.js) .hero__masthead::before {
   color: var(--on-inverse);
 }
 
-.services__intro {
-  align-items: end;
-}
-
 .services__intro .section-label {
   grid-column: 1 / 3;
 }
 
 .services__intro .lede {
-  grid-column: 3 / 10;
+  grid-column: 3 / 9;
   color: var(--on-inverse);
 }
 
@@ -1134,10 +1147,14 @@ html:not(.js) .hero__masthead::before {
   border-bottom: 1px solid var(--rule-inverse);
 }
 
+/* The same pinned-void figure the audiences primary uses: display
+   word at the top, supporting copy pinned to the bottom rule the
+   stack also ends on. The void between them is framed on all four
+   sides, so it reads as the pause it is. */
 .service-primary {
   display: flex;
   flex-direction: column;
-  padding: var(--sp-9) clamp(2rem, 4vw, 4rem) var(--sp-9) 0;
+  padding: var(--sp-9) clamp(2rem, 4vw, 4rem) var(--sp-7) 0;
 }
 
 .service-primary h2 {
@@ -1159,8 +1176,14 @@ html:not(.js) .hero__masthead::before {
   line-height: 1.65;
 }
 
+/* Primary copy outranks secondary copy: one size up, a wider
+   measure, and the bottom pin instead of the secondary's tuck. */
 .service-primary p {
-  padding-top: var(--sp-8);
+  margin-top: auto;
+  padding-top: var(--sp-9);
+  max-width: 46ch;
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+  line-height: 1.62;
 }
 
 .service-stack {
@@ -1227,8 +1250,11 @@ html:not(.js) .hero__masthead::before {
    Capabilities — a ruled register
    ============================================================= */
 
+/* Capabilities, audiences and demanding are one movement — what the
+   work is, who it serves, where it gets hard. Tight seams inside the
+   movement; the chapter pause returns when the slab flips. */
 .capabilities {
-  padding-block: var(--section-lg);
+  padding-block: var(--section-lg) var(--section-md);
   background: var(--canvas-raised);
 }
 
@@ -1351,7 +1377,7 @@ html:not(.js) .hero__masthead::before {
    ============================================================= */
 
 .audiences {
-  padding-block: var(--section-lg);
+  padding-block: var(--section-md);
   background: var(--canvas-alt);
 }
 
@@ -1416,6 +1442,13 @@ html:not(.js) .hero__masthead::before {
   margin-top: var(--sp-2);
 }
 
+/* The primary paragraph is pinned to the container's bottom edge;
+   the stack has to end on that same edge or the pin reads as a
+   near-miss instead of a lock. */
+.audience-secondary:last-child {
+  padding-bottom: 0;
+}
+
 .audience-secondary h3 {
   margin: 0 0 var(--sp-4);
   font-size: var(--t-lg);
@@ -1438,7 +1471,7 @@ html:not(.js) .hero__masthead::before {
    ============================================================= */
 
 .demanding {
-  padding-block: var(--section-lg);
+  padding-block: var(--section-md) var(--section-lg);
   background: var(--canvas);
 }
 
@@ -1472,10 +1505,26 @@ html:not(.js) .hero__masthead::before {
   object-position: center 52%;
 }
 
+/* The copy hangs from the figure's bottom edge; the hairline runs
+   the figure's full height, so the air above the text is a framed
+   panel — the same divider language as the services stack — rather
+   than a hole beside the photograph. */
 .demanding__copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   grid-column: 9 / 13;
-  align-self: end;
-  padding-left: clamp(0.5rem, 1.2vw, 1.25rem);
+  align-self: stretch;
+  justify-content: flex-end;
+  padding-left: clamp(1.25rem, 2vw, 2rem);
+}
+
+.demanding__copy::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--rule);
+  content: "";
 }
 
 .demanding__copy .body-copy {
@@ -1558,10 +1607,13 @@ html:not(.js) .hero__masthead::before {
   line-height: 1.65;
 }
 
+/* Same stations as the capability register: the page's two 3-col
+   registers sit on one grid, so the asymmetry elsewhere reads as a
+   choice against a held structure, not drift. */
 .proof-grid {
   display: grid;
-  grid-template-columns: 1fr 1.1fr 1.25fr;
-  gap: var(--sp-8) clamp(2rem, 3.5vw, 3.25rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-8) var(--grid-gap);
   margin-top: var(--section-md);
 }
 
@@ -1710,9 +1762,12 @@ html:not(.js) .hero__masthead::before {
   line-height: 1.75;
 }
 
+/* Picks up the register station the capability and proof columns
+   established, and runs to the shell edge like every other block. */
 .company-note__copy {
-  grid-column: 6 / 12;
+  grid-column: 5 / 13;
   margin: 0;
+  max-width: 30ch;
   font-size: clamp(1.25rem, 2vw, 2rem);
   font-weight: 450;
   font-variation-settings: var(--vf-display-soft);
@@ -1852,8 +1907,10 @@ html:not(.js) .hero__masthead::before {
   filter: brightness(0) invert(1);
 }
 
+/* Starts on the footer index's second station, so the statement's
+   left edge is answered by the column of links beneath it. */
 .footer__statement {
-  grid-column: 5 / 13;
+  grid-column: 4 / 13;
   margin: 0;
   max-width: 22ch;
   font-size: clamp(1.75rem, 3.4vw, 3.15rem);
@@ -2043,8 +2100,9 @@ a.footer__line:focus-visible {
   background: var(--canvas-raised);
 }
 
+/* A seam between groups outranks any interval inside one. */
 .credential-group + .credential-group {
-  margin-top: var(--section-md);
+  margin-top: var(--section-lg);
 }
 
 .credential-group__head {
@@ -2699,14 +2757,12 @@ a.footer__line:active {
     --shell: 64rem;
   }
 
-  .capability-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: clamp(2rem, 5vw, 4rem);
-  }
-
+  /* The two registers keep sharing stations when they drop to two
+     columns — one gap value, not two near-misses. */
+  .capability-list,
   .proof-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: clamp(2rem, 4vw, 3.5rem);
+    column-gap: clamp(2rem, 4.5vw, 3.75rem);
   }
 
   .editorial-head .section-heading,
@@ -2718,18 +2774,14 @@ a.footer__line:active {
   .compliance__intro {
     grid-column: 9 / 13;
   }
-
-  .footer__statement {
-    grid-column: 4 / 13;
-  }
 }
 
 @media (max-width: 900px) {
   :root {
     --header-height: 4.75rem;
-    --section-xl: clamp(5rem, 12vw, 7.5rem);
-    --section-lg: clamp(4rem, 10vw, 6rem);
-    --section-md: clamp(3rem, 7vw, 4.5rem);
+    --section-xl: clamp(5.5rem, 13vw, 8rem);
+    --section-lg: clamp(3.75rem, 9vw, 5.5rem);
+    --section-md: clamp(2.25rem, 5vw, 3rem);
   }
 
   .brand img {
@@ -2983,8 +3035,14 @@ a.footer__line:active {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--sp-6);
+    justify-content: start;
     margin-top: var(--sp-7);
     padding-left: 0;
+  }
+
+  /* Stacked under the figure, the copy no longer needs the frame. */
+  .demanding__copy::before {
+    content: none;
   }
 
   .demanding__copy p + p {
@@ -3104,9 +3162,9 @@ a.footer__line:active {
   :root {
     --gutter: 1.375rem;
     --grid-gap: 1rem;
-    --section-xl: 5.5rem;
-    --section-lg: 4.25rem;
-    --section-md: 3rem;
+    --section-xl: 6rem;
+    --section-lg: 4rem;
+    --section-md: 2.25rem;
   }
 
   /* The logo already carries the company name at this width. */

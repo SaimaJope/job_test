@@ -247,6 +247,243 @@
     document.addEventListener('pointerout', markOrigin, { passive: true });
 
     /* ---------------------------------------------------------
+       Hero bokeh
+
+       A handful of out-of-focus lights behind the opening. What
+       sells a defocused highlight is not a soft blob but a nearly
+       flat disc with a faintly brighter rim, so each light is
+       pre-rendered as exactly that. Distance does the rest: far
+       lights are large, dim and soft; near ones smaller and more
+       defined. They gather in loose clusters — a uniform scatter
+       reads as confetti, clusters read as real light sources —
+       and they drift a few pixels a second with a slow, uneven
+       breathing, paused whenever the hero is off screen.
+
+       Scroll moves them too: each light rises against the scroll
+       at a rate set by its distance, so the field parallaxes —
+       near lights sweep past, far ones hang back — with a short
+       lag that makes the response read as weight, not wiring.
+       --------------------------------------------------------- */
+
+    const bokehCanvas = document.querySelector('.hero__bokeh');
+    const bokehContext = bokehCanvas?.getContext('2d');
+
+    if (bokehCanvas && bokehContext) {
+      /* The surface's own range: pale cyan-white down to sky blue. */
+      const palette = [
+        [176, 216, 240],
+        [118, 194, 236],
+        [64, 164, 220],
+      ];
+
+      const clusters = [
+        { x: 0.15, y: 0.82, spread: 0.13, count: 5 },
+        { x: 0.86, y: 0.26, spread: 0.17, count: 4 },
+        { x: 0.66, y: 0.76, spread: 0.2, count: 3 },
+        { x: 0.5, y: 0.5, spread: 0.4, count: 2 },
+      ];
+
+      let lights = [];
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let inView = false;
+      let running = false;
+      let frame = 0;
+      let last = 0;
+      let glide = window.scrollY || 0;
+
+      /* Sum of three: a cheap bell curve, so clusters thin out at
+         their edges instead of filling a box. */
+      const gauss = () =>
+        (Math.random() + Math.random() + Math.random()) / 1.5 - 1;
+
+      const sprite = (radius, [r, g, b], softness) => {
+        const size = radius * 2 + 2;
+        const tile = document.createElement('canvas');
+        tile.width = tile.height = Math.ceil(size * dpr);
+        const brush = tile.getContext('2d');
+        brush.scale(dpr, dpr);
+
+        const glow = brush.createRadialGradient(
+          size / 2, size / 2, 0,
+          size / 2, size / 2, radius
+        );
+        const stop = (at, alpha) =>
+          glow.addColorStop(at, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+
+        /* Flat-ish core, brighter rim, then out — the aperture
+           shape, not a Gaussian blob. Softness widens the falloff
+           until the rim all but disappears on the farthest lights. */
+        stop(0, 0.78);
+        stop(Math.max(0.3, 0.72 - softness * 0.34), 0.85);
+        stop(Math.min(0.96, 0.97 - softness * 0.32), 1);
+        stop(1, 0);
+
+        brush.fillStyle = glow;
+        brush.fillRect(0, 0, size, size);
+        return tile;
+      };
+
+      const seed = () => {
+        const scale = 0.72 + 0.48 * Math.min(width / 1200, 1);
+        lights = [];
+
+        clusters.forEach((cluster) => {
+          for (let i = 0; i < cluster.count; i += 1) {
+            const depth = Math.random(); /* 0 near — 1 far */
+            const drift = 1.15 - depth * 0.7;
+            const pick = Math.random();
+            const color = palette[pick < 0.45 ? 0 : pick < 0.8 ? 1 : 2];
+
+            const radius = Math.round(
+              (13 + 62 * Math.pow(depth, 1.45)) * scale
+            );
+
+            lights.push({
+              x: (cluster.x + gauss() * cluster.spread) * width,
+              y: (cluster.y + gauss() * cluster.spread) * height,
+              vx: (Math.random() - 0.5) * 2.6 * drift,
+              vy: (Math.random() - 0.5) * 1.8 * drift,
+              radius,
+              size: radius * 2 + 2,
+              alpha: (0.04 + 0.065 * (1 - depth)) * (0.8 + Math.random() * 0.4),
+              parallax: 0.1 + 0.32 * (1 - depth),
+              w1: 0.18 + Math.random() * 0.4,
+              w2: 0.05 + Math.random() * 0.16,
+              p1: Math.random() * Math.PI * 2,
+              p2: Math.random() * Math.PI * 2,
+              tile: sprite(radius, color, 0.3 + depth * 0.7),
+            });
+          }
+        });
+      };
+
+      const draw = (time) => {
+        bokehContext.clearRect(0, 0, width, height);
+        bokehContext.globalCompositeOperation = 'lighter';
+
+        lights.forEach((light) => {
+          /* Two incommensurate sines: an uneven breathing rather
+             than a metronome, never brighter than the light itself. */
+          const breath =
+            0.78 +
+            0.22 *
+              Math.sin(time * light.w1 + light.p1) *
+              Math.sin(time * light.w2 + light.p2);
+
+          /* The scroll offset wraps, so a long page never scrolls
+             the field empty — lights leaving the top re-enter below. */
+          const reach = light.radius;
+          const span = height + reach * 2;
+          const lifted = light.y - glide * light.parallax + reach;
+          const y = ((lifted % span) + span) % span - reach;
+
+          bokehContext.globalAlpha = light.alpha * breath;
+          bokehContext.drawImage(
+            light.tile,
+            light.x - reach,
+            y - reach,
+            light.size,
+            light.size
+          );
+        });
+
+        bokehContext.globalAlpha = 1;
+      };
+
+      const tick = (now) => {
+        frame = requestAnimationFrame(tick);
+        const step = Math.min((now - last) / 1000, 0.1);
+        last = now;
+
+        /* Chase the scroll position rather than mirror it. */
+        glide += ((window.scrollY || 0) - glide) * Math.min(1, step * 7);
+
+        lights.forEach((light) => {
+          light.x += light.vx * step;
+          light.y += light.vy * step;
+
+          const reach = light.radius;
+          if (light.x < -reach) light.x = width + reach;
+          if (light.x > width + reach) light.x = -reach;
+          if (light.y < -reach) light.y = height + reach;
+          if (light.y > height + reach) light.y = -reach;
+        });
+
+        draw(now / 1000);
+      };
+
+      const setRunning = () => {
+        const wants = inView && !stillQuery.matches && !document.hidden;
+        if (wants === running) return;
+
+        running = wants;
+        if (running) {
+          last = performance.now();
+          frame = requestAnimationFrame(tick);
+        } else {
+          cancelAnimationFrame(frame);
+        }
+      };
+
+      const fit = () => {
+        const rect = bokehCanvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        width = rect.width;
+        height = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        bokehCanvas.width = Math.round(width * dpr);
+        bokehCanvas.height = Math.round(height * dpr);
+        bokehContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        seed();
+        /* A first frame regardless, so a still preference or a
+           paused loop still gets the lights. */
+        draw(2.4);
+      };
+
+      fit();
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          inView = entries[0].isIntersecting;
+          setRunning();
+        }).observe(bokehCanvas);
+      } else {
+        inView = true;
+        setRunning();
+      }
+
+      document.addEventListener('visibilitychange', setRunning);
+      stillQuery.addEventListener('change', () => {
+        setRunning();
+        if (!running) draw(2.4);
+      });
+
+      /* Regenerate only when the canvas genuinely changes shape —
+         a mobile address bar sliding away is not a new composition. */
+      let sizeTimer = 0;
+      window.addEventListener(
+        'resize',
+        () => {
+          window.clearTimeout(sizeTimer);
+          sizeTimer = window.setTimeout(() => {
+            const rect = bokehCanvas.getBoundingClientRect();
+            if (
+              Math.round(rect.width) !== Math.round(width) ||
+              Math.abs(rect.height - height) > 120
+            ) {
+              fit();
+            }
+          }, 180);
+        },
+        { passive: true }
+      );
+    }
+
+    /* ---------------------------------------------------------
        Current year
        --------------------------------------------------------- */
 

@@ -35,7 +35,7 @@
     }
   </script>
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
 
   <header class="site-header" data-compact="false">
@@ -64,11 +64,6 @@
     <section class="hero" aria-labelledby="etusivu-otsikko">
       <canvas class="bokeh-field" aria-hidden="true"></canvas>
       <div class="hero__inner shell">
-        <p class="hero__masthead">
-          <span>JOB Kiinteistötekniikka Oy</span>
-          <span>Oravikoski, Savo</span>
-        </p>
-
         <div class="hero__body">
           <div class="hero__content">
             <h1 class="hero__headline" id="etusivu-otsikko">
@@ -78,180 +73,141 @@
           </div>
           <div class="hero__aside">
             <p class="hero__statement">Suunnittelusta toteutukseen.</p>
-            <p>Urakointi, asennukset, korjaukset ja kunnossapito yhdeltä tekniseltä toimijalta.</p>
           </div>
         </div>
 
         <div class="hero__facts" role="group" aria-label="JOB lyhyesti">
-          <div class="hero__fact">
-            <strong>Sähkö / tele / turva / kylmä / huolto</strong>
-            <span>Laaja tekninen osaaminen samaan kohteeseen.</span>
-          </div>
-          <div class="hero__fact">
-            <strong>Vuodesta 2009</strong>
-            <span>Perustettu Oravikoskella.</span>
-          </div>
-          <div class="hero__fact">
-            <strong>Oma työnjohto</strong>
-            <span>Selkeä vastuu koko toteutuksen ajan.</span>
-          </div>
+          <div class="hero__fact"><strong>Sähkö / tele / turva / kylmä / huolto</strong></div>
+          <div class="hero__fact"><strong>Vuodesta 2009</strong></div>
+          <div class="hero__fact"><strong>Oma työnjohto</strong></div>
         </div>
       </div>
     </section>
 
-    <section class="section services" id="osaaminen" data-reveal data-tone="inverse" aria-labelledby="palvelut-otsikko">
+    <section class="section capabilities-chapter" id="osaaminen" data-tone="inverse" aria-labelledby="osaaminen-otsikko">
       <div class="shell">
-        <div class="services__intro">
+        <header class="capabilities-chapter__intro" data-motion="support">
           <p class="section-label section-label--light">Osaaminen</p>
-          <p class="lede" id="palvelut-otsikko">Neljä teknistä kokonaisuutta. Yksi yhteyshenkilö ja vastuu sovitusta työstä.</p>
-        </div>
+          <h2 class="section-heading" id="osaaminen-otsikko">Neljä teknistä kokonaisuutta. Yksi vastuu.</h2>
+          <p>JOB yhdistää urakoinnin, asennukset, käyttöönoton ja kunnossapidon kohteen mukaan rajatuksi kokonaisuudeksi.</p>
+        </header>
 
-        <div class="services__composition">
-          <article class="service-primary">
-            <h2>Sähköurakointi</h2>
-            <p>Sähköasennukset uudis- ja saneerauskohteisiin, sähkönjakelu, keskukset, kaapelointi ja valaistus. Kokonaisuudet suunnitellaan ja toteutetaan kohteen vaatimusten mukaan.</p>
+        <div class="discipline-list">
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">01</span>
+            <h3>Sähköurakointi</h3>
+            <p class="discipline__summary">Sähköasennukset uudis- ja saneerauskohteisiin kohteen vaatimusten ja sovitun vastuurajauksen mukaan.</p>
+            <ul class="discipline__depth">
+              <li><strong>Sähkönjakelu</strong><span>Keskukset, kaapelointi, valaistus ja kiinteistöjen sähkötekniset kokonaisuudet.</span></li>
+              <li><strong>Käyttöönotto</strong><span>Mittaukset, tarkastukset ja luovutusdokumentaatio työn laajuuden mukaan.</span></li>
+            </ul>
           </article>
 
-          <div class="service-stack">
-            <article class="service-secondary">
-              <h3>Sähkölaitekorjaukset ja sähköhuolto</h3>
-              <p>Vikakorjaukset, sovitut huollot ja kiinteistöjen sähkötekninen kunnossapito.</p>
-            </article>
-            <article class="service-secondary">
-              <h3>Tele- ja turva-asennukset</h3>
-              <p>Tele- ja tietoverkot, paloilmoittimet, kameravalvonta ja kulunvalvonta.</p>
-            </article>
-            <article class="service-secondary">
-              <h3>Kylmäasennukset</h3>
-              <p>Kylmälaitteiden ja lämpöpumppujen asennukset Tukesin asennusoikeuden mukaisesti.</p>
-            </article>
-          </div>
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">02</span>
+            <h3>Sähkölaitekorjaukset ja sähköhuolto</h3>
+            <p class="discipline__summary">Vikakorjaukset, sovitut huollot ja kiinteistöjen sähkötekninen ylläpito.</p>
+            <ul class="discipline__depth">
+              <li><strong>Kunnossapito</strong><span>Korjaukset, huollot ja jatkuvuutta tukeva ylläpito yrityksille ja kiinteistöille.</span></li>
+            </ul>
+          </article>
+
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">03</span>
+            <h3>Tele- ja turva-asennukset</h3>
+            <p class="discipline__summary">Tietoliikenne- ja turvallisuusjärjestelmät osana kiinteistön teknistä kokonaisuutta.</p>
+            <ul class="discipline__depth">
+              <li><strong>Tele ja tietoverkot</strong><span>Sisäverkot, tietoliikennekaapelointi, kuitu-, antenni- ja teleasennukset.</span></li>
+              <li><strong>Paloilmoitin ja turva</strong><span>Paloilmoitinjärjestelmät, kameravalvonta ja kulunvalvonta tarvittavien lupien mukaisesti.</span></li>
+            </ul>
+          </article>
+
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">04</span>
+            <h3>Kylmäasennukset</h3>
+            <p class="discipline__summary">Kylmälaitteiden ja lämpöpumppujen asennukset Tukesin asennusoikeuden mukaisesti.</p>
+            <ul class="discipline__depth">
+              <li><strong>Kylmä ja lämpöpumput</strong><span>Kylmälaite- ja lämpöpumppuasennukset osana kiinteistön teknistä kokonaisuutta.</span></li>
+            </ul>
+          </article>
         </div>
 
-        <div class="services__closing">
+        <div class="capabilities-chapter__closing">
           <strong>Avaimet käteen, kun kohde ja vastuurajaus sitä edellyttävät.</strong>
           <span>Suunnittelu — toteutus — käyttöönotto — huolto</span>
         </div>
       </div>
     </section>
 
-    <section class="section capabilities" data-reveal aria-labelledby="kokonaisuudet-otsikko">
-      <div class="shell">
-        <div class="editorial-head">
-          <p class="section-label">Työkokonaisuudet</p>
-          <h2 class="section-heading" id="kokonaisuudet-otsikko">Tekninen työ jatkuu asennusta pidemmälle.</h2>
-          <p class="body-copy">JOB yhdistää toteutuksen, työnohjauksen, käyttöönoton ja kunnossapidon selkeäksi kokonaisuudeksi.</p>
-        </div>
-
-        <div class="capability-list">
-          <article class="capability">
-            <h3>Sähkönjakelu</h3>
-            <p>Keskukset, kaapelointi, valaistus ja kiinteistöjen sähkötekniset kokonaisuudet.</p>
-          </article>
-          <article class="capability">
-            <h3>Tele ja tietoverkot</h3>
-            <p>Kiinteistöjen sisäverkot, tietoliikennekaapelointi, kuitu-, antenni- ja teleasennukset.</p>
-          </article>
-          <article class="capability">
-            <h3>Paloilmoitin ja turva</h3>
-            <p>Paloilmoitinjärjestelmät, kameravalvonta ja kulunvalvonta tarvittavien lupien mukaisesti.</p>
-          </article>
-          <article class="capability">
-            <h3>Käyttöönotto</h3>
-            <p>Mittaukset, tarkastukset ja työn laajuuteen kuuluva luovutusdokumentaatio.</p>
-          </article>
-          <article class="capability">
-            <h3>Kunnossapito</h3>
-            <p>Korjaukset, huollot ja jatkuvuutta tukeva ylläpito yrityksille ja kiinteistöille.</p>
-          </article>
-          <article class="capability">
-            <h3>Kylmä ja lämpöpumput</h3>
-            <p>Kylmälaite- ja lämpöpumppuasennukset osana kiinteistön teknistä kokonaisuutta.</p>
-          </article>
-        </div>
-
-        <figure class="project-figure">
+    <section class="section project-reference" aria-labelledby="referenssi-otsikko">
+      <div class="shell shell--project">
+        <p class="section-label">Valittu referenssi</p>
+        <figure class="project-figure" data-motion="image">
           <div class="figure-frame">
             <img src="assets/job-leppavirta-fire-station.jpg" alt="Leppävirran pelastusaseman ulkopuoli." width="2048" height="1536" loading="lazy" decoding="async">
           </div>
           <figcaption class="project-figure__caption">
-            <strong>Leppävirran pelastusasema</strong>
+            <strong id="referenssi-otsikko">Leppävirran pelastusasema</strong>
             <span>Sähkö- ja teleurakka</span>
           </figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="section audiences" id="asiakkaat" data-reveal aria-labelledby="asiakkaat-otsikko">
-      <div class="shell">
-        <div class="audiences__head">
-          <p class="section-label">Asiakkaat</p>
-          <h2 class="section-heading section-heading--wide" id="asiakkaat-otsikko">Sama tekninen vastuu eri toiminta&shy;ympäristöissä.</h2>
-        </div>
-
-        <div class="audiences__layout">
-          <article class="audience-primary">
-            <h3>Yritykset</h3>
-            <p>Teollisuuden, liike- ja toimitilakiinteistöjen sähkö-, turva- ja kiinteistötekniset työt. Työ voidaan rajata yksittäisestä asennuksesta johdettuun urakkakokonaisuuteen ja myöhempään kunnossapitoon.</p>
+    <section class="section clients-band" id="asiakkaat" aria-labelledby="asiakkaat-otsikko">
+      <div class="shell clients-band__layout" data-motion="support">
+        <p class="section-label">Asiakkaat</p>
+        <article class="clients-band__primary">
+          <h2 id="asiakkaat-otsikko">Yritykset</h2>
+          <p>Teollisuuden, liike- ja toimitilakiinteistöjen sähkö-, turva- ja kiinteistötekniset työt yksittäisestä asennuksesta johdettuun urakkakokonaisuuteen ja kunnossapitoon.</p>
+        </article>
+        <div class="clients-band__secondary">
+          <article>
+            <h3>Julkinen sektori</h3>
+            <p>Kohteet sovitulla dokumentaatiolla, tarkastuksilla ja tilaajavastuutiedoilla.</p>
           </article>
-
-          <div>
-            <article class="audience-secondary">
-              <h3>Julkinen sektori</h3>
-              <p>Kuntien ja julkisyhteisöjen kohteet sovitulla dokumentaatiolla, tarkastuksilla ja tilaajavastuutiedoilla.</p>
-            </article>
-            <article class="audience-secondary">
-              <h3>Yksityisasiakkaat</h3>
-              <p>Omakotitalojen ja vapaa-ajan asuntojen sähkö-, tele- ja lämpöpumpputyöt suoralla yhteydellä tekijään.</p>
-            </article>
-          </div>
+          <article>
+            <h3>Yksityisasiakkaat</h3>
+            <p>Kotien ja vapaa-ajan asuntojen sähkö-, tele- ja lämpöpumpputyöt.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section demanding" data-reveal aria-labelledby="vaativat-otsikko">
+    <section class="section demanding" aria-labelledby="vaativat-otsikko">
       <div class="shell">
-        <div class="demanding__head">
+        <header class="demanding__head" data-motion="support">
           <p class="section-label">Teollisuus ja vaativat kohteet</p>
-          <h2 class="section-heading section-heading--wide" id="vaativat-otsikko">Vaativissa kohteissa vastuu rajataan selkeästi.</h2>
-        </div>
+          <h2 class="section-heading section-heading--wide" id="vaativat-otsikko">Selkeä vastuu osana suurempaa projektia.</h2>
+        </header>
 
         <div class="demanding__composition">
-          <figure class="demanding__figure">
+          <figure class="demanding__figure" data-motion="image">
             <div class="figure-frame">
               <img src="assets/job-rooftop-installation.jpg" alt="Asentajia aurinkopaneeliasennuksessa rakennuksen katolla." width="2048" height="1773" loading="lazy" decoding="async">
             </div>
           </figure>
           <div class="demanding__copy">
-            <p class="body-copy">Teollisuus-, rakennus- ja datakeskusympäristöissä JOB toteuttaa sovitun sähkö- tai kiinteistöteknisen työkokonaisuuden omalla henkilöstöllä ja omalla työnjohdolla.</p>
-            <p class="body-copy">Laajuus, aikataulu, työmaan rajapinnat ja dokumentointi käydään läpi ennen toteutusta. Näin vastuu pysyy ymmärrettävänä myös osana suurempaa projektiorganisaatiota.</p>
+            <p class="demanding__lead">Teollisuus-, rakennus- ja datakeskusympäristöissä JOB toteuttaa sovitun sähkö- tai kiinteistöteknisen työkokonaisuuden omalla henkilöstöllä ja omalla työnjohdolla.</p>
+            <p>Laajuus, aikataulu, työmaan rajapinnat ja dokumentointi käydään läpi ennen toteutusta.</p>
+
+            <div class="operating-model-wrap">
+              <p class="operating-model__label">Toimintamalli</p>
+              <ol class="operating-model">
+                <li class="operating-model__item"><span class="operating-model__index">01</span><strong>Rajattu työkokonaisuus</strong><span>Sovittu laajuus ja selkeät rajapinnat.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">02</span><strong>Oma henkilöstö</strong><span>JOBin oma asennushenkilöstö.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">03</span><strong>Oma työnjohto</strong><span>Nimetty vastuu ja suora yhteydenpito.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">04</span><strong>Tarkastettu luovutus</strong><span>Käyttöönotto ja dokumentaatio sovitusti.</span></li>
+              </ol>
+            </div>
           </div>
         </div>
-
-        <ul class="operating-model">
-          <li class="operating-model__item">
-            <strong>Rajattu työkokonaisuus</strong>
-            <span>Sovittu laajuus ja selkeät rajapinnat.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Oma henkilöstö</strong>
-            <span>Työ toteutetaan JOBin omalla asennushenkilöstöllä.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Oma työnjohto</strong>
-            <span>Vastuu ja yhteydenpito pysyvät nimetyllä henkilöllä.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Tarkastettu luovutus</strong>
-            <span>Käyttöönotto ja dokumentaatio sovitun laajuuden mukaan.</span>
-          </li>
-        </ul>
       </div>
     </section>
 
-    <section class="section compliance" data-reveal data-tone="inverse" aria-labelledby="patevyydet-otsikko">
+    <section class="section compliance" data-tone="inverse" aria-labelledby="patevyydet-otsikko">
       <div class="shell">
-        <div class="compliance__head">
+        <div class="compliance__head" data-motion="support">
           <p class="section-label section-label--light">Luvat ja pätevyydet</p>
           <h2 class="section-heading section-heading--wide" id="patevyydet-otsikko">Kelpoisuus on tarkistettavissa ennen työn alkua.</h2>
           <p class="compliance__intro">Viranomaisluvat, pätevyys, tilaajavastuutiedot ja toimialajäsenyydet on ryhmitelty sen mukaan, mitä ne ovat.</p>
@@ -291,30 +247,29 @@
       </div>
     </section>
 
-    <section class="section location" data-reveal aria-labelledby="sijainti-otsikko">
-      <div class="shell location__layout">
-        <h2 class="location__title" id="sijainti-otsikko">Oravikoski.</h2>
-        <div class="location__details">
-          <p>Savosta käsin toteutettavaa sähkö- ja kiinteistötekniikkaa.</p>
-          <address>Myllärintie 5<br>71470 Oravikoski<br>Leppävirta</address>
-          <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Myll%C3%A4rintie+5+71470+Oravikoski" target="_blank" rel="noopener">Avaa kartalla</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section company-note" id="yritys" data-reveal aria-labelledby="yritys-otsikko">
-      <div class="shell company-note__layout">
-        <div class="company-note__identity">
+    <section class="section company-profile" id="yritys" aria-labelledby="yritys-otsikko">
+      <div class="shell company-profile__layout">
+        <p class="section-label">Yritys</p>
+        <div class="company-profile__identity" data-motion="support">
+          <p class="company-profile__place">Oravikoski / Leppävirta / Savo</p>
           <h2 id="yritys-otsikko">JOB Kiinteistötekniikka Oy</h2>
-          <p>Perustettu 2009<br>Y-tunnus 2295210-9<br>Myllärintie 5, 71470 Oravikoski</p>
+          <p>Vuonna 2009 perustettu tekninen urakoitsija. Sähkö-, tele-, turva- ja kylmätyöt sekä huolto omalla henkilöstöllä ja työnjohdolla.</p>
         </div>
-        <p class="company-note__copy">Oravikoskella perustettu tekninen urakoitsija. Sähkö-, tele-, turva- ja kylmätyöt sekä huolto omalla henkilöstöllä ja työnjohdolla.</p>
+        <dl class="company-profile__facts">
+          <div><dt>Perustettu</dt><dd>2009</dd></div>
+          <div><dt>Y-tunnus</dt><dd>2295210-9</dd></div>
+          <div>
+            <dt>Toimipaikka</dt>
+            <dd><address>Myllärintie 5<br>71470 Oravikoski<br>Leppävirta</address></dd>
+          </div>
+        </dl>
+        <a class="text-link company-profile__map" href="https://www.google.com/maps/search/?api=1&amp;query=Myll%C3%A4rintie+5+71470+Oravikoski" target="_blank" rel="noopener">Avaa kartalla</a>
       </div>
     </section>
 
-    <section class="contact-band" id="yhteys" data-reveal aria-labelledby="yhteys-otsikko">
+    <section class="contact-band" id="yhteys" aria-labelledby="yhteys-otsikko">
       <div class="shell">
-        <div class="contact-band__top">
+        <div class="contact-band__top" data-motion="support">
           <p class="section-label">Suora yhteys</p>
           <h2 class="contact-band__heading" id="yhteys-otsikko">Kerro kohteesta suoraan projekti&shy;vastaavalle.</h2>
         </div>
@@ -332,47 +287,27 @@
     </section>
   </main>
 
-  <footer class="site-footer" data-reveal>
-    <canvas class="bokeh-field" data-strength="1.45" aria-hidden="true"></canvas>
+  <footer class="site-footer">
     <div class="shell">
-      <div class="footer__lead">
+      <div class="footer__signature">
         <a class="footer__logo" href="index.dc.html" aria-label="JOB Kiinteistötekniikka Oy, etusivu">
           <img src="assets/job-logo.png" alt="" width="1076" height="678">
         </a>
-        <p class="footer__statement">Sähkö- ja kiinteistö&shy;tekniikkaa vuodesta 2009.</p>
-      </div>
-
-      <div class="footer__index">
-        <section class="footer__group">
-          <p class="footer__group-title">Yhteys</p>
-          <a class="footer__line footer__line--lead" href="tel:+358445723200">044&nbsp;572&nbsp;3200</a>
-          <a class="footer__line" href="mailto:info@jobkauppa.fi">info@jobkauppa.fi</a>
-        </section>
-
-        <nav class="footer__group" aria-label="Alatunnisteen linkit">
-          <p class="footer__group-title">Sivut</p>
-          <a class="footer__line" href="#osaaminen">Osaaminen</a>
-          <a class="footer__line" href="patevyydet.dc.html">Pätevyydet</a>
-          <a class="footer__line" href="#yritys">Yritys</a>
-          <a class="footer__line" href="#yhteys">Yhteys</a>
+        <p class="footer__identity">JOB Kiinteistötekniikka Oy<br><span>Y-tunnus 2295210-9</span></p>
+        <div class="footer__contact">
+          <a href="tel:+358445723200">044&nbsp;572&nbsp;3200</a>
+          <a href="mailto:info@jobkauppa.fi">info@jobkauppa.fi</a>
+        </div>
+        <nav class="footer__nav" aria-label="Alatunnisteen linkit">
+          <a href="#osaaminen">Osaaminen</a>
+          <a href="patevyydet.dc.html">Pätevyydet</a>
+          <a href="#yhteys">Yhteys</a>
         </nav>
-
-        <section class="footer__group">
-          <p class="footer__group-title">Toimipaikka</p>
-          <address class="footer__line">Myllärintie 5<br>71470 Oravikoski<br>Leppävirta</address>
-        </section>
-
-        <section class="footer__group">
-          <p class="footer__group-title">Yritys</p>
-          <p class="footer__line">Y-tunnus 2295210-9</p>
-          <p class="footer__line">Perustettu 2009</p>
-          <a class="footer__line" href="en.dc.html" lang="en" hreflang="en">In English</a>
-        </section>
       </div>
 
       <div class="footer__base">
         <span>© <span data-year>2026</span> JOB Kiinteistötekniikka Oy</span>
-        <span>Oravikoski, Savo</span>
+        <a href="en.dc.html" lang="en" hreflang="en">In English</a>
       </div>
     </div>
   </footer>

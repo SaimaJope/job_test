@@ -15,7 +15,7 @@
   <script>document.documentElement.classList.add("js");</script>
   <script src="site.js" defer></script>
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#content">Skip to content</a>
 
   <header class="site-header" data-compact="false">
@@ -44,11 +44,6 @@
     <section class="hero" aria-labelledby="home-title">
       <canvas class="bokeh-field" aria-hidden="true"></canvas>
       <div class="hero__inner shell">
-        <p class="hero__masthead">
-          <span>JOB Kiinteistötekniikka Oy</span>
-          <span>Oravikoski, Finland</span>
-        </p>
-
         <div class="hero__body">
           <div class="hero__content">
             <h1 class="hero__headline hero__headline--en" id="home-title">
@@ -58,180 +53,141 @@
           </div>
           <div class="hero__aside">
             <p class="hero__statement">From design to delivery.</p>
-            <p>Contracting, installation, repair and maintenance through one technical contractor.</p>
           </div>
         </div>
 
         <div class="hero__facts" role="group" aria-label="JOB at a glance">
-          <div class="hero__fact">
-            <strong>Electrical / telecom / security / refrigeration / service</strong>
-            <span>Broad technical capability for the same property or project.</span>
-          </div>
-          <div class="hero__fact">
-            <strong>Established 2009</strong>
-            <span>Based in Oravikoski, Central Savo.</span>
-          </div>
-          <div class="hero__fact">
-            <strong>Own supervision</strong>
-            <span>Clear responsibility throughout delivery.</span>
-          </div>
+          <div class="hero__fact"><strong>Electrical / telecom / security / refrigeration / service</strong></div>
+          <div class="hero__fact"><strong>Established 2009</strong></div>
+          <div class="hero__fact"><strong>Own supervision</strong></div>
         </div>
       </div>
     </section>
 
-    <section class="section services" id="capabilities" data-reveal data-tone="inverse" aria-labelledby="services-title">
+    <section class="section capabilities-chapter" id="capabilities" data-tone="inverse" aria-labelledby="capabilities-title">
       <div class="shell">
-        <div class="services__intro">
+        <header class="capabilities-chapter__intro" data-motion="support">
           <p class="section-label section-label--light">Capabilities</p>
-          <p class="lede" id="services-title">Four technical disciplines. One point of contact and clear responsibility for the agreed scope.</p>
-        </div>
+          <h2 class="section-heading" id="capabilities-title">Four technical disciplines. One accountable contractor.</h2>
+          <p>JOB combines contracting, installation, commissioning and maintenance into a defined scope for each site.</p>
+        </header>
 
-        <div class="services__composition">
-          <article class="service-primary">
-            <h2>Electrical contracting</h2>
-            <p>Electrical work for new construction and refurbishment, including distribution, switchboards, cabling and lighting. Each scope is designed and delivered to the requirements of the site.</p>
+        <div class="discipline-list">
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">01</span>
+            <h3>Electrical contracting</h3>
+            <p class="discipline__summary">Electrical work for new construction and refurbishment, delivered to the site's requirements and agreed scope.</p>
+            <ul class="discipline__depth">
+              <li><strong>Electrical distribution</strong><span>Switchboards, cabling, lighting and electrical systems for commercial and industrial properties.</span></li>
+              <li><strong>Commissioning</strong><span>Measurements, inspections and handover documentation included in the agreed scope.</span></li>
+            </ul>
           </article>
 
-          <div class="service-stack">
-            <article class="service-secondary">
-              <h3>Equipment repair and electrical service</h3>
-              <p>Fault repairs, planned service and electrical maintenance for properties.</p>
-            </article>
-            <article class="service-secondary">
-              <h3>Telecom and security systems</h3>
-              <p>Telecom and data networks, fire alarm systems, CCTV and access control.</p>
-            </article>
-            <article class="service-secondary">
-              <h3>Refrigeration installations</h3>
-              <p>Refrigeration equipment and heat-pump installations under the applicable Finnish authorisation.</p>
-            </article>
-          </div>
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">02</span>
+            <h3>Equipment repair and electrical service</h3>
+            <p class="discipline__summary">Fault repairs, planned service and electrical upkeep for properties.</p>
+            <ul class="discipline__depth">
+              <li><strong>Maintenance</strong><span>Repair, planned service and technical upkeep for businesses and properties.</span></li>
+            </ul>
+          </article>
+
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">03</span>
+            <h3>Telecom and security systems</h3>
+            <p class="discipline__summary">Data and security systems delivered as part of the property's technical scope.</p>
+            <ul class="discipline__depth">
+              <li><strong>Telecom and data</strong><span>Property networks, structured cabling, fibre, antenna and telecom installations.</span></li>
+              <li><strong>Fire alarm and security</strong><span>Fire alarm systems, CCTV and access control under the required Finnish permissions.</span></li>
+            </ul>
+          </article>
+
+          <article class="discipline">
+            <span class="discipline__index" aria-hidden="true">04</span>
+            <h3>Refrigeration installations</h3>
+            <p class="discipline__summary">Refrigeration equipment and heat-pump installations under the applicable Finnish authorisation.</p>
+            <ul class="discipline__depth">
+              <li><strong>Refrigeration and heat pumps</strong><span>Installations integrated into the wider building-technology package.</span></li>
+            </ul>
+          </article>
         </div>
 
-        <div class="services__closing">
+        <div class="capabilities-chapter__closing">
           <strong>Turnkey delivery where the site and scope call for it.</strong>
           <span>Design — installation — commissioning — maintenance</span>
         </div>
       </div>
     </section>
 
-    <section class="section capabilities" data-reveal aria-labelledby="work-packages-title">
-      <div class="shell">
-        <div class="editorial-head">
-          <p class="section-label">Work packages</p>
-          <h2 class="section-heading" id="work-packages-title">Technical work beyond installation.</h2>
-          <p class="body-copy">JOB combines delivery, site supervision, commissioning and maintenance into a defined technical scope.</p>
-        </div>
-
-        <div class="capability-list">
-          <article class="capability">
-            <h3>Electrical distribution</h3>
-            <p>Switchboards, cabling, lighting and electrical systems for commercial and industrial properties.</p>
-          </article>
-          <article class="capability">
-            <h3>Telecom and data</h3>
-            <p>Property networks, structured cabling, fibre, antenna and telecom installations.</p>
-          </article>
-          <article class="capability">
-            <h3>Fire alarm and security</h3>
-            <p>Fire alarm systems, CCTV and access control under the required Finnish permissions.</p>
-          </article>
-          <article class="capability">
-            <h3>Commissioning</h3>
-            <p>Measurements, inspections and handover documentation included in the agreed scope.</p>
-          </article>
-          <article class="capability">
-            <h3>Maintenance</h3>
-            <p>Repair, planned service and technical upkeep for businesses and properties.</p>
-          </article>
-          <article class="capability">
-            <h3>Refrigeration and heat pumps</h3>
-            <p>Refrigeration and heat-pump installations as part of the wider building technology package.</p>
-          </article>
-        </div>
-
-        <figure class="project-figure">
+    <section class="section project-reference" aria-labelledby="reference-title">
+      <div class="shell shell--project">
+        <p class="section-label">Selected reference</p>
+        <figure class="project-figure" data-motion="image">
           <div class="figure-frame">
             <img src="assets/job-leppavirta-fire-station.jpg" alt="Exterior of the Leppävirta fire station." width="2048" height="1536" loading="lazy" decoding="async">
           </div>
           <figcaption class="project-figure__caption">
-            <strong>Leppävirta fire station</strong>
+            <strong id="reference-title">Leppävirta fire station</strong>
             <span>Electrical and telecom contract</span>
           </figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="section audiences" data-reveal aria-labelledby="clients-title">
-      <div class="shell">
-        <div class="audiences__head">
-          <p class="section-label">Clients</p>
-          <h2 class="section-heading section-heading--wide" id="clients-title">The same technical accountability across different environments.</h2>
-        </div>
-
-        <div class="audiences__layout">
-          <article class="audience-primary">
-            <h3>Businesses</h3>
-            <p>Electrical, security and building-technology work for industrial, commercial and office properties. The scope may range from an individual installation to a supervised contract package and ongoing maintenance.</p>
+    <section class="section clients-band" aria-labelledby="clients-title">
+      <div class="shell clients-band__layout" data-motion="support">
+        <p class="section-label">Clients</p>
+        <article class="clients-band__primary">
+          <h2 id="clients-title">Businesses</h2>
+          <p>Electrical, security and building-technology work for industrial, commercial and office properties, from individual installations to supervised contract packages and maintenance.</p>
+        </article>
+        <div class="clients-band__secondary">
+          <article>
+            <h3>Public sector</h3>
+            <p>Sites delivered with agreed documentation, inspections and contractor-liability information.</p>
           </article>
-
-          <div>
-            <article class="audience-secondary">
-              <h3>Public sector</h3>
-              <p>Municipal and public-sector sites delivered with the agreed documentation, inspections and contractor-liability information.</p>
-            </article>
-            <article class="audience-secondary">
-              <h3>Private clients</h3>
-              <p>Electrical, telecom and heat-pump work for detached houses and holiday properties, with direct access to the contractor.</p>
-            </article>
-          </div>
+          <article>
+            <h3>Private clients</h3>
+            <p>Electrical, telecom and heat-pump work for homes and holiday properties.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section demanding" data-reveal aria-labelledby="demanding-title">
+    <section class="section demanding" aria-labelledby="demanding-title">
       <div class="shell">
-        <div class="demanding__head">
+        <header class="demanding__head" data-motion="support">
           <p class="section-label">Industry and demanding sites</p>
-          <h2 class="section-heading section-heading--wide" id="demanding-title">On complex sites, responsibility must be clearly defined.</h2>
-        </div>
+          <h2 class="section-heading section-heading--wide" id="demanding-title">Clear responsibility within a larger project.</h2>
+        </header>
 
         <div class="demanding__composition">
-          <figure class="demanding__figure">
+          <figure class="demanding__figure" data-motion="image">
             <div class="figure-frame">
               <img src="assets/job-rooftop-installation.jpg" alt="Installers working on a rooftop solar-panel installation." width="2048" height="1773" loading="lazy" decoding="async">
             </div>
           </figure>
           <div class="demanding__copy">
-            <p class="body-copy">In industrial, construction and data-centre environments, JOB can deliver a defined electrical or building-technology work package using its own installation personnel and site supervision.</p>
-            <p class="body-copy">Scope, schedule, site interfaces and handover requirements are agreed before work begins. This keeps responsibility clear within a larger project organisation.</p>
+            <p class="demanding__lead">In industrial, construction and data-centre environments, JOB delivers a defined electrical or building-technology package using its own installation personnel and site supervision.</p>
+            <p>Scope, schedule, site interfaces and handover requirements are agreed before work begins.</p>
+
+            <div class="operating-model-wrap">
+              <p class="operating-model__label">Operating model</p>
+              <ol class="operating-model">
+                <li class="operating-model__item"><span class="operating-model__index">01</span><strong>Defined work package</strong><span>Agreed scope and clear project interfaces.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">02</span><strong>Own personnel</strong><span>JOB's own installation team.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">03</span><strong>Own supervision</strong><span>Named responsibility and direct communication.</span></li>
+                <li class="operating-model__item"><span class="operating-model__index">04</span><strong>Verified handover</strong><span>Commissioning and documentation as agreed.</span></li>
+              </ol>
+            </div>
           </div>
         </div>
-
-        <ul class="operating-model">
-          <li class="operating-model__item">
-            <strong>Defined work package</strong>
-            <span>Agreed scope and clear project interfaces.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Own personnel</strong>
-            <span>Work carried out by JOB's own installation team.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Own supervision</strong>
-            <span>A named person retains responsibility and communication.</span>
-          </li>
-          <li class="operating-model__item">
-            <strong>Verified handover</strong>
-            <span>Commissioning and documentation to the agreed extent.</span>
-          </li>
-        </ul>
       </div>
     </section>
 
-    <section class="section compliance" id="compliance" data-reveal data-tone="inverse" aria-labelledby="compliance-title">
+    <section class="section compliance" id="compliance" data-tone="inverse" aria-labelledby="compliance-title">
       <div class="shell">
-        <div class="compliance__head">
+        <div class="compliance__head" data-motion="support">
           <p class="section-label section-label--light">Qualifications and compliance</p>
           <h2 class="section-heading section-heading--wide" id="compliance-title">Supplier eligibility can be checked before work begins.</h2>
           <p class="compliance__intro">Finnish regulatory permissions, professional qualification, contractor information and memberships are presented as separate categories.</p>
@@ -272,30 +228,29 @@
       </div>
     </section>
 
-    <section class="section location" data-reveal aria-labelledby="location-title">
-      <div class="shell location__layout">
-        <h2 class="location__title" id="location-title">Oravikoski.</h2>
-        <div class="location__details">
-          <p>Electrical and building technology delivered from Central Savo, Finland.</p>
-          <address>Myllärintie 5<br>71470 Oravikoski<br>Leppävirta, Finland</address>
-          <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Myll%C3%A4rintie+5+71470+Oravikoski" target="_blank" rel="noopener">Open in maps</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section company-note" id="company" data-reveal aria-labelledby="company-title">
-      <div class="shell company-note__layout">
-        <div class="company-note__identity">
+    <section class="section company-profile" id="company" aria-labelledby="company-title">
+      <div class="shell company-profile__layout">
+        <p class="section-label">Company</p>
+        <div class="company-profile__identity" data-motion="support">
+          <p class="company-profile__place">Oravikoski / Leppävirta / Central Savo</p>
           <h2 id="company-title">JOB Kiinteistötekniikka Oy</h2>
-          <p>Established 2009<br>Business ID 2295210-9<br>Myllärintie 5, 71470 Oravikoski<br>Leppävirta, Finland</p>
+          <p>A technical contractor established in 2009. Electrical, telecom, security and refrigeration work, supported by service, own personnel and own supervision.</p>
         </div>
-        <p class="company-note__copy">A technical contractor established in Oravikoski. Electrical, telecom, security and refrigeration work, supported by service, own personnel and own supervision.</p>
+        <dl class="company-profile__facts">
+          <div><dt>Established</dt><dd>2009</dd></div>
+          <div><dt>Business ID</dt><dd>2295210-9</dd></div>
+          <div>
+            <dt>Location</dt>
+            <dd><address>Myllärintie 5<br>71470 Oravikoski<br>Leppävirta, Finland</address></dd>
+          </div>
+        </dl>
+        <a class="text-link company-profile__map" href="https://www.google.com/maps/search/?api=1&amp;query=Myll%C3%A4rintie+5+71470+Oravikoski" target="_blank" rel="noopener">Open in maps</a>
       </div>
     </section>
 
-    <section class="contact-band" id="contact" data-reveal aria-labelledby="contact-title">
+    <section class="contact-band" id="contact" aria-labelledby="contact-title">
       <div class="shell">
-        <div class="contact-band__top">
+        <div class="contact-band__top" data-motion="support">
           <p class="section-label">Direct contact</p>
           <h2 class="contact-band__heading" id="contact-title">Discuss the site directly with the project lead.</h2>
         </div>
@@ -311,47 +266,27 @@
     </section>
   </main>
 
-  <footer class="site-footer" data-reveal>
-    <canvas class="bokeh-field" data-strength="1.45" aria-hidden="true"></canvas>
+  <footer class="site-footer">
     <div class="shell">
-      <div class="footer__lead">
+      <div class="footer__signature">
         <a class="footer__logo" href="en.dc.html" aria-label="JOB Kiinteistötekniikka Oy, home">
           <img src="assets/job-logo.png" alt="" width="1076" height="678">
         </a>
-        <p class="footer__statement">Electrical and building technology since 2009.</p>
-      </div>
-
-      <div class="footer__index">
-        <section class="footer__group">
-          <p class="footer__group-title">Contact</p>
-          <a class="footer__line footer__line--lead" href="tel:+358445723200">+358&nbsp;44&nbsp;572&nbsp;3200</a>
-          <a class="footer__line" href="mailto:info@jobkauppa.fi">info@jobkauppa.fi</a>
-        </section>
-
-        <nav class="footer__group" aria-label="Footer links">
-          <p class="footer__group-title">Pages</p>
-          <a class="footer__line" href="#capabilities">Capabilities</a>
-          <a class="footer__line" href="#compliance">Compliance</a>
-          <a class="footer__line" href="#company">Company</a>
-          <a class="footer__line" href="#contact">Contact</a>
+        <p class="footer__identity">JOB Kiinteistötekniikka Oy<br><span>Business ID 2295210-9</span></p>
+        <div class="footer__contact">
+          <a href="tel:+358445723200">+358&nbsp;44&nbsp;572&nbsp;3200</a>
+          <a href="mailto:info@jobkauppa.fi">info@jobkauppa.fi</a>
+        </div>
+        <nav class="footer__nav" aria-label="Footer links">
+          <a href="#capabilities">Capabilities</a>
+          <a href="#compliance">Compliance</a>
+          <a href="#contact">Contact</a>
         </nav>
-
-        <section class="footer__group">
-          <p class="footer__group-title">Location</p>
-          <address class="footer__line">Myllärintie 5<br>71470 Oravikoski<br>Leppävirta, Finland</address>
-        </section>
-
-        <section class="footer__group">
-          <p class="footer__group-title">Company</p>
-          <p class="footer__line">Business ID 2295210-9</p>
-          <p class="footer__line">Established 2009</p>
-          <a class="footer__line" href="index.dc.html" lang="fi" hreflang="fi">Suomeksi</a>
-        </section>
       </div>
 
       <div class="footer__base">
         <span>© <span data-year>2026</span> JOB Kiinteistötekniikka Oy</span>
-        <span>Oravikoski, Finland</span>
+        <a href="index.dc.html" lang="fi" hreflang="fi">Suomeksi</a>
       </div>
     </div>
   </footer>

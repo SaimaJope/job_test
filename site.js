@@ -189,6 +189,38 @@
     }
 
     /* ---------------------------------------------------------
+       Homepage motion
+
+       Only explicitly authored moments enter: selected supporting
+       copy settles by ten pixels, and documentary photography is
+       uncovered. The rest of the page is already in place.
+       --------------------------------------------------------- */
+
+    const motionElements = document.querySelectorAll('[data-motion]');
+
+    const settleMotion = (element) => {
+      element.dataset.motionState = 'in';
+    };
+
+    if (!('IntersectionObserver' in window) || stillQuery.matches) {
+      motionElements.forEach(settleMotion);
+    } else {
+      const motionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            settleMotion(entry.target);
+            motionObserver.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.04 }
+      );
+
+      motionElements.forEach((element) => motionObserver.observe(element));
+      window.setTimeout(() => motionElements.forEach(settleMotion), 3000);
+    }
+
+    /* ---------------------------------------------------------
        Directional rules
 
        Every accent rule on the page wipes in from a fixed corner.
@@ -260,11 +292,6 @@
        and they drift a few pixels a second with a slow, uneven
        breathing, paused whenever their surface is off screen.
 
-       Scroll moves them too: each light rises against the scroll
-       at a rate set by its distance, so the field parallaxes —
-       near lights sweep past, far ones hang back — with a short
-       lag that makes the response read as weight, not wiring.
-
        data-strength scales a field's brightness: the footer runs
        hotter than the hero, where legibility of the headline asks
        for restraint.
@@ -303,7 +330,6 @@
       let running = false;
       let frame = 0;
       let last = 0;
-      let glide = window.scrollY || 0;
 
       const sprite = (radius, [r, g, b], softness) => {
         const size = radius * 2 + 2;
@@ -358,7 +384,6 @@
               radius,
               size: radius * 2 + 2,
               alpha: (0.04 + 0.065 * (1 - depth)) * (0.8 + Math.random() * 0.4) * strength,
-              parallax: 0.1 + 0.32 * (1 - depth),
               w1: 0.18 + Math.random() * 0.4,
               w2: 0.05 + Math.random() * 0.16,
               p1: Math.random() * Math.PI * 2,
@@ -382,18 +407,13 @@
               Math.sin(time * light.w1 + light.p1) *
               Math.sin(time * light.w2 + light.p2);
 
-          /* The scroll offset wraps, so a long page never scrolls
-             the field empty — lights leaving the top re-enter below. */
           const reach = light.radius;
-          const span = height + reach * 2;
-          const lifted = light.y - glide * light.parallax + reach;
-          const y = ((lifted % span) + span) % span - reach;
 
           bokehContext.globalAlpha = light.alpha * breath;
           bokehContext.drawImage(
             light.tile,
             light.x - reach,
-            y - reach,
+            light.y - reach,
             light.size,
             light.size
           );
@@ -406,9 +426,6 @@
         frame = requestAnimationFrame(tick);
         const step = Math.min((now - last) / 1000, 0.1);
         last = now;
-
-        /* Chase the scroll position rather than mirror it. */
-        glide += ((window.scrollY || 0) - glide) * Math.min(1, step * 7);
 
         lights.forEach((light) => {
           light.x += light.vx * step;
